@@ -1,0 +1,6 @@
+#!/usr/bin/env php
+<?php
+
+echo getcwd();
+echo '----------------------' . "\n";
+exit(23);
