@@ -28,7 +28,8 @@
         "phpunit/phpunit": "^7.0"
     },
     "scripts": {
-        "code-check": "phpcs --standard=PSR2 codetest/"
+        "code-check": "phpcs --standard=PSR2 codetest/",
+        "phpunit": "phpunit --bootstrap vendor/autoload"
     },
     "bin": [
         "bin/crook"
