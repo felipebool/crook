@@ -15,12 +15,10 @@ class Application
 
     public function run()
     {
-        $scriptAction = $this->config->getCrookConfig()[$this->hookType];
-        $composer = $this->config->getCrookConfig()['composer'];
-        $parameter = ' run-script ';
-        $suppressError = ' 2> /dev/null';
+        $action = $this->getAction($this->hookType);
+        $bin = $this->config->getComposer();
 
-        $command = $composer . $parameter . $scriptAction;// . $suppressError;
+        $command = $bin . ' run-script ' . $action;
 
         exec($command, $output, $returnCode);
 
@@ -28,5 +26,16 @@ class Application
             'code' => $returnCode,
             'message' => implode("\n", $output)
         ];
+    }
+
+    private function getAction($hook): string
+    {
+        $crook = $this->config->getCrookConfig();
+
+        if (!isset($crook[$hook])) {
+            throw new \Exception('Hook action not defined');
+        }
+
+        return $crook[$hook];
     }
 }

@@ -1,5 +1,3 @@
 {
-  "pre-commit": "code-check",
-  "composer": "/home/felipe/bin/composer"
+    "composer": "/home/felipe/bin/composer"
 }
-

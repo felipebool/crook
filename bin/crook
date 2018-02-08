@@ -1,11 +1,19 @@
 #!/usr/bin/env php
 <?php
 
-require_once '../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 use Symfony\Component\Console\Application;
+use Crook\Command\AddHook;
+use Crook\Command\RemoveHook;
+use Crook\Command\InitHook;
 
 $application = new Application();
+
+$application->add(new AddHook);
+$application->add(new RemoveHook);
+$application->add(new InitHook);
+
 try {
     $application->run();
 } catch (\Exception $e) {

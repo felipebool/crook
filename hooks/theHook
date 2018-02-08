@@ -8,11 +8,15 @@ use Crook\Config;
 
 $app = new Application(
     new Config(dirname(__FILE__, 2)),
-    basename(__FILE__)
+    basename($argv[0])
 );
 
-$result = $app->run();
+try {
+    $result = $app->run();
+} catch (\Exception $e) {
+    exit(23);
+}
 
 echo $result['message'];
-//exit($result['code']);
+exit($result['code']);
 
