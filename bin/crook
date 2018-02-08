@@ -1,14 +1,58 @@
 #!/usr/bin/env php
 <?php
 
-require_once __DIR__ . '/../vendor/autoload.php';
+function defineComposerAutoloadPath()
+{
+    $autoload = [
+        __DIR__ . '/../../../autoload.php',
+        __DIR__ . '/../../autoload.php',
+        __DIR__ . '/../vendor/autoload.php',
+        __DIR__ . '/vendor/autoload.php'
+    ];
+
+    foreach ($autoload as $file) {
+        if (file_exists($file)) {
+            define('CROOK_COMPOSER_AUTOLOAD', $file);
+            break;
+        }
+    }
+
+    if (!defined('CROOK_COMPOSER_AUTOLOAD')) {
+        fwrite(
+            STDERR,
+            'Crook is completely dependent of Composer. To continue, you must' . PHP_EOL .
+            "\t". 'composer install' . PHP_EOL .
+            'Learn something new today https://getcomposer.org/.' . PHP_EOL
+        );
+
+        exit(23);
+    }
+}
+
+function defineProjectRootPath()
+{
+    $rootDir = __DIR__ . '/../../../../';
+
+    if (file_exists($rootDir . '/vendor')) {
+        define('CROOK_PROJECT_ROOT', $rootDir);
+    }
+}
+
+$crookName = 'Crook';
+$crookVersion = '0.0.1';
+
+defineComposerAutoloadPath();
+defineProjectRootPath();
+
+
+require_once CROOK_COMPOSER_AUTOLOAD;
 
 use Symfony\Component\Console\Application;
 use Crook\Command\AddHook;
 use Crook\Command\RemoveHook;
 use Crook\Command\InitHook;
 
-$application = new Application();
+$application = new Application($crookName, $crookVersion);
 
 $application->add(new AddHook);
 $application->add(new RemoveHook);
@@ -19,3 +63,4 @@ try {
 } catch (\Exception $e) {
     echo $e->getMessage();
 }
+
