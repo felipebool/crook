@@ -8,53 +8,44 @@ class Config
     private $crookConfig;
     private $basePath;
 
-    public function __construct($basePath)
+    public function getComposerConfigPath(): string
     {
-        $this->basePath = $basePath;
-
-        $composerContent = file_get_contents($this->getComposerConfigPath());
-        $crookContent = file_get_contents($this->getCrookConfigPath());
-
-        $this->composerConfig = json_decode($composerContent, true);
-        $this->crookConfig = json_decode($crookContent, true);
+        return CROOK_PROJECT_ROOT . 'composer.json';
     }
 
-    private function getComposerConfigPath(): string
+    public function getComposerContent(): array
     {
-        return $this->basePath . '/composer.json';
+        $path = $this->getComposerConfigPath();
+
+        return json_decode(file_get_contents($path));
     }
 
-    private function getCrookConfigPath(): string
+    public function getCrookPath(): string
     {
-        return $this->basePath . '/crook.json';
+        return CROOK_PROJECT_ROOT . 'crook.json';
     }
 
-    public function getComposerConfig(): array
+    public function getCrookContent(): array
     {
-        return $this->composerConfig;
+        $path = $this->getCrookConfigPath();
+
+        return json_decode(file_get_contents($path));
     }
 
-    public function getCrookConfig(): array
+    public function getComposerBinPath(): string
     {
-        return $this->crookConfig;
-    }
+        $crookConfig = $this->getCrookContent();
 
-    public function getComposer(): string
-    {
-        $crookConfig = $this->getCrookConfig();
-        $basePath = $this->getBasePath();
+        if (isset($crookConfig['composer'])) {
+            return $crookConfig['composer'];
+        }
 
-        return $crookConfig['composer'] ?? $basePath . '/vendor/bin/composer';
-    }
-
-    public function getBasePath(): string
-    {
-        return $this->basePath;
+        return CROOK_PROJECT_ROOT . '/vendor/bin/composer';
     }
 
     public function addHook($hook, $action): void
     {
-        $crookConfig = $this->getCrookConfig();
+        $crookConfig = $this->getCrookContent();
         $crookConfig[$hook] = $action;
 
         $this->saveConfig($crookConfig);
@@ -62,7 +53,7 @@ class Config
 
     public function removeHook($hook)
     {
-        $crookConfig = $this->getCrookConfig();
+        $crookConfig = $this->getCrookContent();
 
         if (isset($crookConfig[$hook])) {
             unset($crookConfig[$hook]);
@@ -72,11 +63,11 @@ class Config
 
     private function saveConfig(array $newConfig)
     {
-        $crookFile = $this->getCrookConfigPath();
+        $crookFile = $this->getCrookPath();
 
         file_put_contents(
             $crookFile,
-            json_encode($newConfig, JSON_PRETTY_PRINT)
+            json_encode($newConfig, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
         );
     }
 }
