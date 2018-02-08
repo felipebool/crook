@@ -8,6 +8,11 @@ class Config
     private $crookConfig;
     private $basePath;
 
+    public function getProjectRoot()
+    {
+        return CROOK_PROJECT_ROOT;
+    }
+
     public function getComposerConfigPath(): string
     {
         return CROOK_PROJECT_ROOT . 'composer.json';
@@ -69,5 +74,12 @@ class Config
             $crookFile,
             json_encode($newConfig, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
         );
+    }
+
+    public function createCrookConfigFile()
+    {
+        $crookFile = $this->getCrookPath();
+
+        file_put_contents($crookFile, '');
     }
 }

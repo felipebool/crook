@@ -6,21 +6,22 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Crook\Config;
 
 class InitHook extends Command
 {
+    private $crookConfig;
+
     protected function configure()
     {
         $this->setName('init');
         $this->setDescription('Init crook files');
+
+        $this->crookConfig = new Config;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $rootDir = dirname(__FILE__, 4);
-        $crookConfigPath = $rootDir . '/crook.json';
-
-        $handle = fopen($crookConfigPath, 'w');
-        fclose($handle);
+        $this->crookConfig->createCrookConfigFile();
     }
 }
