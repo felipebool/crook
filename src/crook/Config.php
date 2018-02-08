@@ -8,7 +8,7 @@ class Config
     private $crookConfig;
     private $basePath;
 
-    public function getProjectRoot()
+    public function getProjectRoot(): string
     {
         return CROOK_PROJECT_ROOT;
     }
@@ -56,17 +56,20 @@ class Config
         $this->saveConfig($crookConfig);
     }
 
-    public function removeHook($hook)
+    public function removeHook($hook): void
     {
         $crookConfig = $this->getCrookContent();
 
         if (isset($crookConfig[$hook])) {
             unset($crookConfig[$hook]);
+
+            $crookConfig = $crookConfig ?? '';
+
             $this->saveConfig($crookConfig);
         }
     }
 
-    private function saveConfig(array $newConfig)
+    private function saveConfig(mixed $newConfig): void
     {
         $crookFile = $this->getCrookPath();
 
@@ -76,7 +79,7 @@ class Config
         );
     }
 
-    public function createCrookConfigFile()
+    public function createCrookConfigFile(): void
     {
         $crookFile = $this->getCrookPath();
 
