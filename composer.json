@@ -2,6 +2,12 @@
     "name": "felipebool/crook",
     "description": "Crook is a simple tool to ease your life when dealing with git hooks",
     "type": "library",
+    "keywords": [
+        "crook",
+        "git",
+        "hooks",
+        "githook"
+    ],
     "license": "MIT",
     "authors": [
         {
@@ -21,5 +27,8 @@
     },
     "scripts": {
         "code-check": "phpcs --standard=PSR2 codetest/"
-    }
+    },
+    "bin": [
+        "bin/crook"
+    ]
 }
