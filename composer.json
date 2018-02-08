@@ -30,9 +30,11 @@
     },
     "scripts": {
         "code-check": "phpcs --standard=PSR2 codetest/",
-        "phpunit": "phpunit --bootstrap vendor/autoload"
+        "phpunit": "phpunit --bootstrap vendor/autoload",
+        "post-install-cmd": "php -r \"copy('felipebool/theHook', 'theHook');\""
     },
     "bin": [
         "bin/crook"
     ]
 }
+
