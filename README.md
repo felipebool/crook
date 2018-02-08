@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/felipebool/crook.svg?branch=master)](https://travis-ci.org/felipebool/crook)
 # crook
 First of all, Crook is a work in progress. This tool is intended to integrate composer scripts to git hoooks.
 
