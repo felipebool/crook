@@ -1,6 +1,18 @@
 #!/usr/bin/env php
 <?php
 
-echo getcwd();
-echo '----------------------' . "\n";
-exit(23);
+require_once 'vendor/autoload.php';
+
+use Crook\Application;
+use Crook\Config;
+
+$app = new Application(
+    new Config(dirname(__FILE__, 2)),
+    basename(__FILE__)
+);
+
+$result = $app->run();
+
+echo $result['message'];
+//exit($result['code']);
+

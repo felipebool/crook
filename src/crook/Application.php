@@ -4,19 +4,29 @@ namespace Crook;
 
 class Application
 {
-    private $crook;
-    private $composer;
+    private $config;
     private $hookType;
 
-    public function __construct(Config $crook, Config $composer, string $hookType)
+    public function __construct(Config $config, string $hookType)
     {
-        $this->composer = $composer;
-        $this->crook = $crook;
+        $this->config = $config;
         $this->hookType = $hookType;
     }
 
     public function run()
     {
-        exit(23);
+        $scriptAction = $this->config->getCrookConfig()[$this->hookType];
+        $composer = $this->config->getCrookConfig()['composer'];
+        $parameter = ' run-script ';
+        $suppressError = ' 2> /dev/null';
+
+        $command = $composer . $parameter . $scriptAction;// . $suppressError;
+
+        exec($command, $output, $returnCode);
+
+        return [
+            'code' => $returnCode,
+            'message' => implode("\n", $output)
+        ];
     }
 }

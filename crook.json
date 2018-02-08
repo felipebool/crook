@@ -1,6 +1,5 @@
 {
-  "pre-commit": [
-    "phpcs",
-    "phpunit"
-  ]
+  "pre-commit": "code-check",
+  "composer": "/home/felipe/bin/composer"
 }
+

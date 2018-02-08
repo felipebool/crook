@@ -1,0 +1,25 @@
+{
+    "name": "felipebool/crook",
+    "description": "Crook is a simple tool to ease your life when dealing with git hooks",
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Felipe Lopes",
+            "email": "bolzin@gmail.com"
+        }
+    ],
+    "require": {
+    },
+    "autoload": {
+        "psr-4": {
+            "Crook\\": "src/crook"
+        }
+    },
+    "require-dev": {
+        "squizlabs/php_codesniffer": "^3.2"
+    },
+    "scripts": {
+        "code-check": "phpcs --standard=PSR2 codetest/"
+    }
+}

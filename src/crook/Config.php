@@ -6,17 +6,35 @@ namespace Crook;
 class Config
 {
     private $configData;
+    private $composerConfig;
+    private $crookConfig;
 
-    public function __construct($configPath)
+    public function __construct($basePath)
     {
-        $this->configData = json_decode(file_get_contents($configPath));
+        $this->basePath = $basePath;
+
+        $this->composerConfig = json_decode(
+            file_get_contents($this->basePath . '/composer.json'),
+            true
+        );
+        $this->crookConfig = json_decode(
+            file_get_contents($this->basePath . '/crook.json'),
+            true
+        );
     }
 
-    public function __get($name)
+    public function getComposerConfig()
     {
-        if (isset($this->configData[$name])) {
-            return $this->configData[$name];
-        }
+        return $this->composerConfig;
+    }
 
+    public function getCrookConfig()
+    {
+        return $this->crookConfig;
+    }
+
+    public function getComposer()
+    {
+        return $this->crookConfig['composer'];
     }
 }
