@@ -39,3 +39,4 @@ class Application
         return $crook[$hook];
     }
 }
+

@@ -22,7 +22,7 @@ class Config
     {
         $path = $this->getComposerConfigPath();
 
-        return json_decode(file_get_contents($path));
+        return json_decode(file_get_contents($path), true);
     }
 
     public function getCrookPath(): string
@@ -33,8 +33,11 @@ class Config
     public function getCrookContent(): array
     {
         $path = $this->getCrookPath();
+        $content = file_get_contents($path);
 
-        return json_decode(file_get_contents($path));
+        $content = !empty($content) ? $content : '{}';
+
+        return json_decode($content, true);
     }
 
     public function getComposerBinPath(): string
@@ -45,7 +48,7 @@ class Config
             return $crookConfig['composer'];
         }
 
-        return CROOK_PROJECT_ROOT . '/vendor/bin/composer';
+        return CROOK_PROJECT_ROOT . 'vendor/bin/composer';
     }
 
     public function addHook($hook, $action): void
@@ -63,20 +66,23 @@ class Config
         if (isset($crookConfig[$hook])) {
             unset($crookConfig[$hook]);
 
-            $crookConfig = $crookConfig ?? '';
-
             $this->saveConfig($crookConfig);
         }
     }
 
-    private function saveConfig(mixed $newConfig): void
+    private function saveConfig(array $newConfig): void
     {
         $crookFile = $this->getCrookPath();
+        $content = '';
 
-        file_put_contents(
-            $crookFile,
-            json_encode($newConfig, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
-        );
+        if (!empty($newConfig)) {
+            $content = json_encode(
+                $newConfig,
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+            );
+        }
+
+        file_put_contents($crookFile, $content);
     }
 
     public function createCrookConfigFile(): void
@@ -86,3 +92,4 @@ class Config
         file_put_contents($crookFile, '');
     }
 }
+

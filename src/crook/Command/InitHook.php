@@ -24,9 +24,10 @@ class InitHook extends Command
     {
         $this->crookConfig->createCrookConfigFile();
         $this->copyTheHook();
+        $this->makeTheHookExecutable();
     }
 
-    protected function copyTheHook()
+    private function copyTheHook()
     {
         $root = $this->crookConfig->getProjectRoot();
 
@@ -34,6 +35,14 @@ class InitHook extends Command
         $destination = $root . 'theHook';
 
         copy($source, $destination);
+    }
+
+    private function makeTheHookExecutable()
+    {
+        $root = $this->crookConfig->getProjectRoot();
+
+        $theHookPath = $root . 'theHook';
+        chmod($theHookPath, 0755);
     }
 }
 

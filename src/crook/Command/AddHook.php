@@ -47,8 +47,8 @@ class AddHook extends Command
     {
         $rootDir = $this->crookConfig->getProjectRoot();
 
-        $newHookPath = $rootDir . '/.git/hooks/' . $hook;
-        $theHookPath = $rootDir . '/hooks/theHook';
+        $newHookPath = $rootDir . '.git/hooks/' . $hook;
+        $theHookPath = $rootDir . 'theHook';
 
         symlink($theHookPath, $newHookPath);
     }

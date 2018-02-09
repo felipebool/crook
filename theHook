@@ -7,7 +7,10 @@ if (!defined('CROOK_PROJECT_ROOT')) {
     define('CROOK_PROJECT_ROOT', __DIR__ . '/');
 }
 
-$app = new Crook\Application(new Crook\Config);
+$hookPath = explode('/', $argv[0]);                                              
+$hookType = array_pop($hookPath);
+
+$app = new Crook\Application(new Crook\Config, $hookType);
 
 try {
     $result = $app->run();

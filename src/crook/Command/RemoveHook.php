@@ -35,10 +35,9 @@ class RemoveHook extends Command
 
     private function removeLink($hook)
     {
-        $hookName = $hook;
-        $rootDir = dirname(__FILE__, 4);
+        $rootDir = $rootDir = $this->crookConfig->getProjectRoot();
+        $hookPath = $rootDir . '.git/hooks/' . $hook;
 
-        $hookPath = $rootDir . '/.git/hooks/' . $hookName;
         unlink($hookPath);
     }
 
@@ -47,3 +46,4 @@ class RemoveHook extends Command
         $this->crookConfig->removeHook($hook);
     }
 }
+
