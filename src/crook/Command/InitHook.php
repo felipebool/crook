@@ -23,5 +23,17 @@ class InitHook extends Command
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $this->crookConfig->createCrookConfigFile();
+        $this->copyTheHook();
+    }
+
+    protected function copyTheHook()
+    {
+        $root = $this->crookConfig->getProjectRoot();
+
+        $source = $root . 'vendor/felipebool/crook/theHook';
+        $destination = $root . 'theHook';
+
+        copy($source, $destination);
     }
 }
+
