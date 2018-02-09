@@ -32,7 +32,7 @@ class Config
 
     public function getCrookContent(): array
     {
-        $path = $this->getCrookConfigPath();
+        $path = $this->getCrookPath();
 
         return json_decode(file_get_contents($path));
     }
