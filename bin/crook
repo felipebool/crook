@@ -52,13 +52,11 @@ require_once CROOK_COMPOSER_AUTOLOAD;
 use Symfony\Component\Console\Application;
 use Crook\Command\AddHook;
 use Crook\Command\RemoveHook;
-use Crook\Command\InitHook;
 
 $application = new Application($crookName, $crookVersion);
 
 $application->add(new AddHook);
 $application->add(new RemoveHook);
-$application->add(new InitHook);
 
 try {
     $application->run();
