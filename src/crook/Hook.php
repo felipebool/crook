@@ -46,4 +46,11 @@ class Hook
 
         symlink($theHookPath, $gitHookPath);
     }
+
+    public function removeLink($name)
+    {
+        $gitHookPath = $this->config->getGitHookDir() . $name;
+
+        unlink($gitHookPath);
+    }
 }

@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Crook\Config;
+use Crook\Hook;
 
 class RemoveHook extends Command
 {
@@ -29,21 +30,8 @@ class RemoveHook extends Command
     {
         $hookName = $input->getArgument('hook-name');
 
-        $this->removeLink($hookName);
-        $this->removeFromConfig($hookName);
-    }
-
-    private function removeLink($hook)
-    {
-        $rootDir = $rootDir = $this->crookConfig->getProjectRoot();
-        $hookPath = $rootDir . '.git/hooks/' . $hook;
-
-        unlink($hookPath);
-    }
-
-    private function removeFromConfig($hook)
-    {
-        $this->crookConfig->removeHook($hook);
+        $hook = new Hook($this->crookConfig);
+        $hook->removeLink($hookName);
+        $hook->remove($hookName);
     }
 }
-
