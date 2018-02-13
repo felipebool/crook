@@ -35,8 +35,7 @@
         "phpunit": "phpunit --bootstrap vendor/autoload",
         "post-install-cmd": [
           "php -r \"fopen('./crook.json', 'w');\"",
-          "php -r \"copy('./vendor/felipebool/crook/theHook', './theHook');\"",
-          "php -r \"chmod('./theHook', '0775');\""
+          "php -r \"copy('vendor/felipebool/crook/theHook', 'theHook');\""
         ]
     },
     "bin": [
