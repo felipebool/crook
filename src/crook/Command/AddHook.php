@@ -7,6 +7,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Crook\Config;
+use Crook\Hook;
 
 class AddHook extends Command
 {
@@ -35,26 +36,13 @@ class AddHook extends Command
         $hookName = $input->getArgument('hook-name');
         $hookAction = $input->getArgument('hook-action');
 
+        $hook = new Hook($this->crookConfig);
+
         try {
-            $this->createLink($hookName);
-            $this->addHookToCrook($hookName, $hookAction);
+            $hook->add($hookName, $hookAction);
+            $hook->createLink($hookName);
         } catch (\Exception $e) {
             throw new \Exception('Unable to create symlink');
         }
-    }
-
-    private function createLink($hook): void
-    {
-        $rootDir = $this->crookConfig->getProjectRoot();
-
-        $newHookPath = $rootDir . '.git/hooks/' . $hook;
-        $theHookPath = $rootDir . 'theHook';
-
-        symlink($theHookPath, $newHookPath);
-    }
-
-    private function addHookToCrook($hookName, $hookAction): void
-    {
-        $this->crookConfig->addHook($hookName, $hookAction);
     }
 }

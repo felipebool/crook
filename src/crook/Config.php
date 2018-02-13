@@ -36,6 +36,11 @@ class Config
         return json_decode($content, true);
     }
 
+    public function getGitHookDir()
+    {
+        return $this->getProjectRoot() . '.git/hooks/';
+    }
+
     public function getComposerBinPath(): string
     {
         $crookConfig = $this->getCrookContent();
@@ -94,6 +99,20 @@ class Config
         }
 
         throw new \Exception('Unknown hook action');
+    }
+
+    public function update(array $newConf)
+    {
+        $crookConf = $this->getCrookPath();
+        $fp = fopen($crookConf, 'w');
+
+        fwrite(
+            $fp,
+            json_encode(
+                $newConf,
+                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+            )
+        );
     }
 }
 
