@@ -2,15 +2,32 @@
 
 namespace Crook;
 
+/**
+ * Class Hook
+ * @package Crook
+ */
 class Hook
 {
+    /**
+     * @var Config
+     */
     private $config;
 
+    /**
+     * Hook constructor.
+     * @param Config $config
+     */
     public function __construct(Config $config)
     {
         $this->config = $config;
     }
 
+    /**
+     * Add new hook $name with action $action
+     *
+     * @param $name
+     * @param $action
+     */
     public function add($name, $action)
     {
         $crookConf = $this->config->getCrookContent();
@@ -19,6 +36,11 @@ class Hook
         $this->config->update($crookConf);
     }
 
+    /**
+     * Remove $name hook from crook.json
+     *
+     * @param $name
+     */
     public function remove($name)
     {
         $crookConf = $this->config->getCrookContent();
@@ -27,18 +49,35 @@ class Hook
         $this->config->update($crookConf);
     }
 
+    /**
+     * Update action for $name hook
+     *
+     * @param $name
+     * @param $action
+     */
     public function update($name, $action)
     {
         $this->add($name, $action);
     }
 
-    public function getAction($name)
+    /**
+     * Get action for $name hook
+     *
+     * @param $name
+     * @return string
+     */
+    public function getAction($name): string
     {
         $crookConf = $this->config->getCrookContent();
 
         return $crookConf[$name];
     }
 
+    /**
+     * Create link from .git/hooks/$name to theHook
+     *
+     * @param $name
+     */
     public function createLink($name)
     {
         $gitHookPath = $this->config->getGitHookDir() . $name;
@@ -47,6 +86,11 @@ class Hook
         symlink($theHookPath, $gitHookPath);
     }
 
+    /**
+     * Remove link from .git/hooks/$name to theHook
+     *
+     * @param $name
+     */
     public function removeLink($name)
     {
         $gitHookPath = $this->config->getGitHookDir() . $name;
