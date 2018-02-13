@@ -17,11 +17,13 @@ class AddHook extends Command
     {
         $this->setName('add');
         $this->setDescription('Add a new hook to project');
+
         $this->addArgument(
             'hook-name',
             InputArgument::REQUIRED,
             'Git hook name'
         );
+
         $this->addArgument(
             'hook-action',
             InputArgument::REQUIRED,

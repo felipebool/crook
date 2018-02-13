@@ -21,7 +21,8 @@ function defineComposerAutoloadPath()
     if (!defined('CROOK_COMPOSER_AUTOLOAD')) {
         fwrite(
             STDERR,
-            'Crook is completely dependent of Composer. To continue, you must' . PHP_EOL .
+            'Crook is completely dependent of Composer.' . PHP_EOL .
+            ' To continue, you must' . PHP_EOL .
             "\t". 'composer install' . PHP_EOL .
             'Learn something new today https://getcomposer.org/.' . PHP_EOL
         );
@@ -64,4 +65,3 @@ try {
 } catch (\Exception $e) {
     echo $e->getMessage();
 }
-
