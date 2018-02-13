@@ -4,10 +4,6 @@ namespace Crook;
 
 class Config
 {
-    private $composerConfig;
-    private $crookConfig;
-    private $basePath;
-
     public function getProjectRoot(): string
     {
         return CROOK_PROJECT_ROOT;
@@ -15,7 +11,7 @@ class Config
 
     public function getComposerConfigPath(): string
     {
-        return CROOK_PROJECT_ROOT . 'composer.json';
+        return $this->getProjectRoot() . 'composer.json';
     }
 
     public function getComposerContent(): array
@@ -27,7 +23,7 @@ class Config
 
     public function getCrookPath(): string
     {
-        return CROOK_PROJECT_ROOT . 'crook.json';
+        return $this->getProjectRoot() . 'crook.json';
     }
 
     public function getCrookContent(): array
@@ -48,29 +44,26 @@ class Config
             return $crookConfig['composer'];
         }
 
-        return CROOK_PROJECT_ROOT . 'vendor/bin/composer';
+        return $this->getProjectRoot() . 'vendor/bin/composer';
     }
 
-    public function addHook($hook, $action): void
+    public function addHook($hook, $action)
     {
         $crookConfig = $this->getCrookContent();
         $crookConfig[$hook] = $action;
 
-        $this->saveConfig($crookConfig);
+        return $this->saveConfig($crookConfig);
     }
 
-    public function removeHook($hook): void
+    public function removeHook($hook)
     {
         $crookConfig = $this->getCrookContent();
+        unset($crookConfig[$hook]);
 
-        if (isset($crookConfig[$hook])) {
-            unset($crookConfig[$hook]);
-
-            $this->saveConfig($crookConfig);
-        }
+        return $this->saveConfig($crookConfig);
     }
 
-    private function saveConfig(array $newConfig): void
+    private function saveConfig(array $newConfig)
     {
         $crookFile = $this->getCrookPath();
         $content = '';
@@ -82,14 +75,25 @@ class Config
             );
         }
 
-        file_put_contents($crookFile, $content);
+        return file_put_contents($crookFile, $content);
     }
 
-    public function createCrookConfigFile(): void
+    public function createCrookConfigFile(): int
     {
         $crookFile = $this->getCrookPath();
 
-        file_put_contents($crookFile, '');
+        return file_put_contents($crookFile, '');
+    }
+
+    public function getAction($hook)
+    {
+        $crookContent = $this->getCrookContent();
+
+        if (isset($crookContent[$hook])) {
+            return $crookContent[$hook];
+        }
+
+        throw new \Exception('Unknown hook action');
     }
 }
 

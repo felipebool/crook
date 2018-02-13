@@ -15,7 +15,7 @@ class Application
 
     public function run()
     {
-        $action = $this->getAction($this->hookType);
+        $action = $this->config->getAction($this->hookType);
         $bin = $this->config->getComposerBinPath();
 
         $command = $bin . ' run-script ' . $action;
@@ -27,16 +27,4 @@ class Application
             'message' => implode("\n", $output)
         ];
     }
-
-    private function getAction($hook): string
-    {
-        $crook = $this->config->getCrookContent();
-
-        if (!isset($crook[$hook])) {
-            throw new \Exception('Hook action not defined');
-        }
-
-        return $crook[$hook];
-    }
 }
-
