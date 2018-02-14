@@ -13,6 +13,11 @@ Crook is the simplest way to define and manage your Git Hooks. Its aim is to all
 ## Usage
 The aim of this project is to be as simple as possible, thus, you won't have to write any PHP code, you just need to install any packages from packagist and then make them run for partucular git hooks. The process is explained in the following sections.
 
+### Installation
+Just run
+
+```$ composer require felipebool/crook --dev```
+
 ### Init Crook
 ```$ vendor/bin/crook init``` will create crook.json configuration file and theHook in the root of your project.
 
@@ -38,7 +43,7 @@ Although you are able to edit crook.json by yourself, you should do it using ```
 ## The mechanism
 Every time you run a
 ```vendor/bin/crook add hook-name action-name```
-Crook creates a symbolic link from .git/hooks/hook-name to /you/project/hook/theHook, simple as that.
+Crook creates a symbolic link from .git/hooks/hook-name to /your/project/hook/theHook, simple as that.
 
 Now, when git trigger the action hook-name, it will follow the link to /your/project/hook/theHook and Crook will then look for a script named action-name inside your project's composer.json and will execute the commands defined there.
 
