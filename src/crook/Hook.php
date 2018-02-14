@@ -98,6 +98,9 @@ class Hook
         unlink($gitHookPath);
     }
 
+    /**
+     * Copy theHook file from package vendot to project root directory
+     */
     public function copyTheHook()
     {
         $source = $this->config->getVendorDir() . 'felipebool/crook/theHook';
@@ -106,6 +109,9 @@ class Hook
         copy($source, $destination);
     }
 
+    /**
+     * Make theHook executable
+     */
     public function makeTheHookExecutable()
     {
         $theHookPath = $this->config->getProjectRoot() . 'theHook';

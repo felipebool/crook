@@ -2,30 +2,86 @@
 
 namespace Crook;
 
+/**
+ * Class Config
+ * @package Crook
+ */
 class Config
 {
+    /**
+     * Returns project root directory
+     *
+     * @return string
+     */
     public function getProjectRoot(): string
     {
         return CROOK_PROJECT_ROOT;
     }
 
-    public function getComposerConfigPath(): string
+    /**
+     * Returns git hooks directory
+     *
+     * @return string
+     */
+    public function getGitHookDir()
     {
-        return $this->getProjectRoot() . 'composer.json';
+        return $this->getProjectRoot() . '.git/hooks/';
     }
 
+    /**
+     * Returns vendor directory
+     *
+     * @return string
+     */
+    public function getVendorDir()
+    {
+        return $this->getProjectRoot() . 'vendor/';
+    }
+
+    /**
+     * Returns composer.json content
+     *
+     * @return array
+     */
     public function getComposerContent(): array
     {
-        $path = $this->getComposerConfigPath();
+        $path = $this->getProjectRoot() . 'composer.json';
 
         return json_decode(file_get_contents($path), true);
     }
 
+    /**
+     * Returns composer path, throws exceptions if it is not defined
+     *
+     * @return string
+     * @throws \Exception
+     */
+    public function getComposerPath(): string
+    {
+        $crookConfig = $this->getCrookContent();
+
+        if (isset($crookConfig['composer'])) {
+            return $crookConfig['composer'];
+        }
+
+        throw new \Exception('Undefined composer path');
+    }
+
+    /**
+     * Returns crooks.json configuration file path
+     *
+     * @return string
+     */
     public function getCrookPath(): string
     {
         return $this->getProjectRoot() . 'crook.json';
     }
 
+    /**
+     * Returns crook.json content
+     *
+     * @return array
+     */
     public function getCrookContent(): array
     {
         $path = $this->getCrookPath();
@@ -36,53 +92,12 @@ class Config
         return json_decode($content, true);
     }
 
-    public function getGitHookDir()
-    {
-        return $this->getProjectRoot() . '.git/hooks/';
-    }
-
-    public function getComposerBinPath(): string
-    {
-        $crookConfig = $this->getCrookContent();
-
-        if (isset($crookConfig['composer'])) {
-            return $crookConfig['composer'];
-        }
-
-        return $this->getProjectRoot() . 'vendor/bin/composer';
-    }
-
-    public function addHook($hook, $action)
-    {
-        $crookConfig = $this->getCrookContent();
-        $crookConfig[$hook] = $action;
-
-        return $this->saveConfig($crookConfig);
-    }
-
-    public function removeHook($hook)
-    {
-        $crookConfig = $this->getCrookContent();
-        unset($crookConfig[$hook]);
-
-        return $this->saveConfig($crookConfig);
-    }
-
-    private function saveConfig(array $newConfig)
-    {
-        $crookFile = $this->getCrookPath();
-        $content = '';
-
-        if (!empty($newConfig)) {
-            $content = json_encode(
-                $newConfig,
-                JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
-            );
-        }
-
-        return file_put_contents($crookFile, $content);
-    }
-
+    /**
+     * Creates crooks.json and returns the amount of bytes written or false,
+     * in case of error.
+     *
+     * @return int
+     */
     public function createCrookConfigFile(): int
     {
         $crookFile = $this->getCrookPath();
@@ -90,6 +105,13 @@ class Config
         return file_put_contents($crookFile, '');
     }
 
+    /**
+     * Returns the action for $hook or throws exception
+     *
+     * @param $hook
+     * @return mixed
+     * @throws \Exception
+     */
     public function getAction($hook)
     {
         $crookContent = $this->getCrookContent();
@@ -101,6 +123,11 @@ class Config
         throw new \Exception('Unknown hook action');
     }
 
+    /**
+     * Updates crook.json configuration file
+     *
+     * @param array $newConf
+     */
     public function update(array $newConf)
     {
         $crookConf = $this->getCrookPath();
@@ -114,10 +141,4 @@ class Config
             )
         );
     }
-
-    public function getVendorDir()
-    {
-        return $this->getProjectRoot() . 'vendor/';
-    }
 }
-

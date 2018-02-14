@@ -9,6 +9,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Crook\Config;
 use Crook\Hook;
 
+/**
+ * Class AddHook
+ * @package Crook\Command
+ */
 class AddHook extends Command
 {
     protected function configure()
@@ -29,6 +33,15 @@ class AddHook extends Command
         );
     }
 
+    /**
+     * Creates symlink and add hook-name and hook-action to crook.json
+     * configuration file
+     *
+     * @param InputInterface $input
+     * @param OutputInterface $output
+     * @return int|null|void
+     * @throws \Exception
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $hookName = $input->getArgument('hook-name');

@@ -2,9 +2,20 @@
 
 namespace Crook;
 
+/**
+ * Class Application
+ * @package Crook
+ */
 class Application
 {
+    /**
+     * @var Config
+     */
     private $config;
+
+    /**
+     * @var string
+     */
     private $hookType;
 
     public function __construct(Config $config, string $hookType)
@@ -13,13 +24,25 @@ class Application
         $this->hookType = $hookType;
     }
 
+    /**
+     * Gets the action to $hookType and execute it, returning the error
+     * message and code if something goes wrong
+     *
+     * @return array
+     */
     public function run()
     {
-        $action = $this->config->getAction($this->hookType);
-        $bin = $this->config->getComposerBinPath();
+        try {
+            $action = $this->config->getAction($this->hookType);
+            $bin = $this->config->getComposerPath();
+        } catch (\Exception $e) {
+            return [
+                'code' => 23,
+                'message' => $e->getMessage()
+            ];
+        }
 
         $command = $bin . ' run-script ' . $action;
-
         exec($command, $output, $returnCode);
 
         return [
