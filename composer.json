@@ -34,8 +34,8 @@
         "code-check-psr2": "phpcs --standard=PSR2 tests/dumbCode/PsrCompliant.php",
         "phpunit": "phpunit --bootstrap vendor/autoload",
         "post-install-cmd": [
-          "php -r \"fopen('./crook.json', 'w');\"",
-          "php -r \"copy('vendor/felipebool/crook/theHook', 'theHook');\""
+          "@php -r \"fopen('./crook.json', 'w');\"",
+          "@php -r \"copy('vendor/felipebool/crook/theHook', 'theHook');\""
         ]
     },
     "bin": [
