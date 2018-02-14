@@ -11,8 +11,6 @@ use Crook\Hook;
 
 class RemoveHook extends Command
 {
-    private $crookConfig;
-
     protected function configure()
     {
         $this->setName('remove');
@@ -30,7 +28,8 @@ class RemoveHook extends Command
     {
         $hookName = $input->getArgument('hook-name');
 
-        $hook = new Hook($this->crookConfig);
+        $hook = new Hook(new Config);
+
         $hook->removeLink($hookName);
         $hook->remove($hookName);
     }

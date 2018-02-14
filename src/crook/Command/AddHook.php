@@ -11,8 +11,6 @@ use Crook\Hook;
 
 class AddHook extends Command
 {
-    private $crookConfig;
-
     protected function configure()
     {
         $this->setName('add');
@@ -29,8 +27,6 @@ class AddHook extends Command
             InputArgument::REQUIRED,
             'Composer action'
         );
-
-        $this->crookConfig = new Config;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)
@@ -38,7 +34,7 @@ class AddHook extends Command
         $hookName = $input->getArgument('hook-name');
         $hookAction = $input->getArgument('hook-action');
 
-        $hook = new Hook($this->crookConfig);
+        $hook = new Hook(new Config);
 
         try {
             $hook->add($hookName, $hookAction);

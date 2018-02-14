@@ -49,14 +49,16 @@ defineProjectRootPath();
 
 require_once CROOK_COMPOSER_AUTOLOAD;
 
-use Symfony\Component\Console\Application;
 use Crook\Command\AddHook;
+use Crook\Command\InitHook;
 use Crook\Command\RemoveHook;
+use Symfony\Component\Console\Application;
 
 $application = new Application($crookName, $crookVersion);
 
 $application->add(new AddHook);
 $application->add(new RemoveHook);
+$application->add(new InitHook);
 
 try {
     $application->run();
