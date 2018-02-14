@@ -1,5 +1,7 @@
 [![Build Status](https://travis-ci.org/felipebool/crook.svg?branch=master)](https://travis-ci.org/felipebool/crook)
 [![Maintainability](https://api.codeclimate.com/v1/badges/dda7bbc045a955530da4/maintainability)](https://codeclimate.com/github/felipebool/crook/maintainability)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/2849859fd1ad4d299bf7403a85171319)](https://www.codacy.com/app/felipebool/crook?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=felipebool/crook&amp;utm_campaign=Badge_Grade)
+[![Codacy Badge](https://api.codacy.com/project/badge/Coverage/2849859fd1ad4d299bf7403a85171319)](https://www.codacy.com/app/felipebool/crook?utm_source=github.com&utm_medium=referral&utm_content=felipebool/crook&utm_campaign=Badge_Coverage)
 
 # Crook
 First of all, Crook is a work in progress.
