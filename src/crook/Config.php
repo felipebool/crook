@@ -85,16 +85,20 @@ class Config
     public function getCrookContent(): array
     {
         $path = $this->getCrookPath();
-        $content = file_get_contents($path);
 
+        if (!file_exists($path)) {
+            $this->createCrookConfigFile();
+        }
+
+        $content = file_get_contents($path);
         $content = !empty($content) ? $content : '{}';
 
         return json_decode($content, true);
     }
 
     /**
-     * Creates crooks.json and returns the amount of bytes written or false,
-     * in case of error.
+     * Creates crooks.json and returns the amount of bytes
+     * written or false, in case of error.
      *
      * @return int
      */
@@ -106,34 +110,16 @@ class Config
     }
 
     /**
-     * Returns the action for $hook or throws exception
-     *
-     * @param $hook
-     * @return mixed
-     * @throws \Exception
-     */
-    public function getAction($hook)
-    {
-        $crookContent = $this->getCrookContent();
-
-        if (isset($crookContent[$hook])) {
-            return $crookContent[$hook];
-        }
-
-        throw new \Exception('Unknown hook action');
-    }
-
-    /**
      * Updates crook.json configuration file
      *
      * @param array $newConf
+     * @return bool|int
      */
     public function update(array $newConf)
     {
-        $crookConf = $this->getCrookPath();
-        $fp = fopen($crookConf, 'w');
+        $fp = fopen($this->getCrookPath(), 'w');
 
-        fwrite(
+        return fwrite(
             $fp,
             json_encode(
                 $newConf,

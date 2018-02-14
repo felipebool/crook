@@ -1,60 +1,56 @@
 <?php
 
-namespace Test;
+namespace Crook;
 
 use PHPUnit\Framework\TestCase;
 use Dotenv\Dotenv;
 
 class ApplicationTest extends TestCase
 {
+    private $config;
+
     public function setUp()
     {
+        $this->config = $this
+            ->getMockBuilder('Crook\Config')
+            ->setMethods(['getProjectRoot', 'getComposerPath'])
+            ->getMock();
+
+        $this
+            ->config
+            ->method('getProjectRoot')
+            ->willReturn(__DIR__ . '/../../');
+
         $dotenv = new Dotenv(__DIR__ . '/../../');
         $dotenv->load();
+
+        $this
+            ->config
+            ->method('getComposerPath')
+            ->willReturn(getenv('COMPOSER_BIN'));
     }
 
-    public function testRunWithPreCommitHookAndFailing()
+    public function testPreCommitHookTypeWithNonPsrCodeRun()
     {
-        $config = $this
-            ->getMockBuilder('Crook\Config')
-            ->setMethods(['getComposerBinPath', 'getAction'])
-            ->getMock();
+        $app = new Application($this->config, 'pre-commit');
+        $hook = new Hook($this->config);
 
-        $config
-            ->method('getComposerBinPath')
-            ->willReturn(getenv('COMPOSER_BIN'));
-
-        $config
-            ->method('getAction')
-            ->willReturn('code-check-not-psr2');
-
-        $app = new \Crook\Application($config, 'pre-commit');
-
+        $hook->add('pre-commit', 'code-check-non-psr2');
         $result = $app->run();
 
+        $this->assertContains('FOUND 3 ERRORS AFFECTING 2 LINES', $result['message']);
         $this->assertGreaterThan(0, $result['code']);
-        $this->assertContains('FOUND 4 ERRORS AFFECTING 3 LINES', $result['message']);
     }
 
-    public function testRunWithPreCommitHookAndHavingSuccess()
+    public function testPreCommitHookTypeWithPsrCodeRun()
     {
-        $config = $this
-            ->getMockBuilder('Crook\Config')
-            ->setMethods(['getComposerBinPath', 'getAction'])
-            ->getMock();
+        $app = new Application($this->config, 'pre-commit');
+        $hook = new Hook($this->config);
 
-        $config
-            ->method('getComposerBinPath')
-            ->willReturn(getenv('COMPOSER_BIN'));
-
-        $config
-            ->method('getAction')
-            ->willReturn('code-check-psr2');
-
-        $app = new \Crook\Application($config, 'pre-commit');
-
+        $hook->add('pre-commit', 'code-check-psr2');
         $result = $app->run();
 
+        $this->assertEquals('', $result['message']);
         $this->assertEquals(0, $result['code']);
     }
 }

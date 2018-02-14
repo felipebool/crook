@@ -27,37 +27,33 @@ class Hook
      *
      * @param $name
      * @param $action
+     * @return bool
+     * @throws \Exception
      */
-    public function add($name, $action)
+    public function add($name, $action): bool
     {
+        if (!in_array($name, $this->getAvailableHooks())) {
+            throw new \Exception('Invalid hook name: ' . $name);
+        }
+
         $crookConf = $this->config->getCrookContent();
         $crookConf[$name] = $action;
 
-        $this->config->update($crookConf);
+        return $this->config->update($crookConf);
     }
 
     /**
      * Remove $name hook from crook.json
      *
      * @param $name
+     * @return bool|int
      */
     public function remove($name)
     {
         $crookConf = $this->config->getCrookContent();
         unset($crookConf[$name]);
 
-        $this->config->update($crookConf);
-    }
-
-    /**
-     * Update action for $name hook
-     *
-     * @param $name
-     * @param $action
-     */
-    public function update($name, $action)
-    {
-        $this->add($name, $action);
+        return $this->config->update($crookConf);
     }
 
     /**
@@ -70,32 +66,38 @@ class Hook
     {
         $crookConf = $this->config->getCrookContent();
 
-        return $crookConf[$name];
+        return $crookConf[$name] ?? '';
     }
 
     /**
      * Create link from .git/hooks/$name to theHook
      *
      * @param $name
+     * @return bool
      */
-    public function createLink($name)
+    public function createLink($name): bool
     {
         $gitHookPath = $this->config->getGitHookDir() . $name;
         $theHookPath = $this->config->getProjectRoot() . 'theHook';
 
-        symlink($theHookPath, $gitHookPath);
+        if (!in_array($name, $this->getAvailableHooks())) {
+            throw new \Exception('Invalid hook name: ' . $name);
+        }
+
+        return symlink($theHookPath, $gitHookPath);
     }
 
     /**
      * Remove link from .git/hooks/$name to theHook
      *
      * @param $name
+     * @return bool
      */
-    public function removeLink($name)
+    public function removeLink($name): bool
     {
         $gitHookPath = $this->config->getGitHookDir() . $name;
 
-        unlink($gitHookPath);
+        return unlink($gitHookPath);
     }
 
     /**
@@ -117,5 +119,28 @@ class Hook
         $theHookPath = $this->config->getProjectRoot() . 'theHook';
 
         chmod($theHookPath, 0755);
+    }
+
+    private function getAvailableHooks()
+    {
+        return [
+            'applypatch-msg',
+            'pre-applypatch',
+            'post-applypatch',
+            'pre-commit',
+            'prepare-commit-msg',
+            'commit-msg',
+            'post-commit',
+            'pre-rebase',
+            'post-checkout',
+            'post-merge',
+            'pre-push',
+            'pre-receive',
+            'update',
+            'post-receive',
+            'post-update',
+            'pre-auto-gc',
+            'post-rewrite'
+        ];
     }
 }

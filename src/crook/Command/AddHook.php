@@ -53,7 +53,7 @@ class AddHook extends Command
             $hook->add($hookName, $hookAction);
             $hook->createLink($hookName);
         } catch (\Exception $e) {
-            throw new \Exception('Unable to create symlink');
+            throw new \Exception($e->getMessage() . "\n");
         }
     }
 }

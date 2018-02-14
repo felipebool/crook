@@ -30,7 +30,7 @@
         "vlucas/phpdotenv": "^2.4"
     },
     "scripts": {
-        "code-check-not-psr2": "phpcs --standard=PSR2 tests/dumbCode/NonPsrCompliant.php",
+        "code-check-non-psr2": "phpcs --standard=PSR2 tests/dumbCode/NonPsrCompliant.php",
         "code-check-psr2": "phpcs --standard=PSR2 tests/dumbCode/PsrCompliant.php",
         "phpunit": "phpunit --bootstrap vendor/autoload",
         "post-root-package-install": [

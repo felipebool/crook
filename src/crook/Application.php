@@ -32,13 +32,15 @@ class Application
      */
     public function run()
     {
+        $hook = new Hook($this->config);
+
         try {
-            $action = $this->config->getAction($this->hookType);
+            $action = $hook->getAction($this->hookType);
             $bin = $this->config->getComposerPath();
         } catch (\Exception $e) {
             return [
                 'code' => 23,
-                'message' => $e->getMessage()
+                'message' => $e->getMessage() . "\n"
             ];
         }
 

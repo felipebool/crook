@@ -1,8 +1,8 @@
 <?php
 
+namespace Crook;
+
 use PHPUnit\Framework\TestCase;
-use Crook\Config;
-use Dotenv\Dotenv;
 
 class ConfigTest extends TestCase
 {
@@ -10,74 +10,40 @@ class ConfigTest extends TestCase
 
     public function setUp()
     {
-        $dotenv = new Dotenv(__DIR__ . '/../../');
-        $dotenv->load();
-
         $this->config = $this
             ->getMockBuilder('Crook\Config')
             ->setMethods(['getProjectRoot'])
             ->getMock();
 
-        $this->config
+        $this
+            ->config
             ->method('getProjectRoot')
-            ->willReturn(getenv('PROJECT_ROOT_DIR'));
-
-        $this->cleanCrookConfFile();
-    }
-
-    private function cleanCrookConfFile()
-    {
-        $crookConf = $this->config->getCrookPath();
-        file_put_contents($crookConf, '');
-    }
-
-    public function testAddNewHook()
-    {
-        $result = $this->config->addHook('newHook', 'newAction');
-
-        $this->assertGreaterThan(0, $result);
-    }
-
-    public function testRemoveExistentHook()
-    {
-        $this->config->addHook('newHook', 'newAction');
-        $result = $this->config->removeHook('newHook');
-
-        $this->assertGreaterThanOrEqual(0, $result);
-    }
-
-    public function testRemoveNonexistentHook()
-    {
-        $result = $this->config->removeHook('newHook');
-
-        $this->assertEquals(0, $result);
+            ->willReturn(__DIR__ . '/../../');
     }
 
     public function testCreateCrookConfigFile()
     {
-        $this->config->createCrookConfigFile();
+        $result = $this->config->createCrookConfigFile();
 
         $this->assertFileExists($this->config->getCrookPath());
-    }
-
-    public function testGetExistentAction()
-    {
-        $this->config->addHook('newHook', 'newAction');
-
-        $result = $this->config->getAction('newHook');
-        $this->assertEquals('newAction', $result);
+        $this->assertGreaterThanOrEqual(0, $result);
     }
 
     /**
-     * @expectedException \Exception
+     * @depends testCreateCrookConfigFile
      */
-    public function testGetNonexistentAction()
+    public function testUpdate()
     {
-        $this->config->getAction('gibberish');
-    }
+        $newConf = [
+          'pre-commit' => 'any-action'
+        ];
 
-    protected function tearDown()
-    {
-        unlink($this->config->getCrookPath());
+        $result = $this->config->update($newConf);
+        $expected = strlen(json_encode(
+            $newConf,
+            JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES
+        ));
+
+        $this->assertEquals($expected, $result);
     }
 }

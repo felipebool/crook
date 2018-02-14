@@ -3,6 +3,7 @@
     <testsuites>
         <testsuite name="Crook Test Suite">
             <directory>./tests/crook/</directory>
+            <exclude>./tests/dumbCode/</exclude>
         </testsuite>
     </testsuites>
 
