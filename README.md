@@ -1,4 +1,6 @@
 [![Build Status](https://travis-ci.org/felipebool/crook.svg?branch=master)](https://travis-ci.org/felipebool/crook)
+[![Maintainability](https://api.codeclimate.com/v1/badges/dda7bbc045a955530da4/maintainability)](https://codeclimate.com/github/felipebool/crook/maintainability)
+
 # Crook
 First of all, Crook is a work in progress.
 
