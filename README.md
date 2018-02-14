@@ -38,7 +38,7 @@ Crook uses a json configuration file just like composer, it is called crook.json
   "composer": "/home/felipe/bin/composer"
 }
 ```
-Although you are able to edit crook.json by yourself, you should do it using ```$ vendor/bin/crook``` in order to create the symbolic links. The mechanism is explained in the next section.
+Although you are able to edit crook.json by yourself, you should do it using ```$ vendor/bin/crook``` in order to create the symbolic links. Only the composer path **must** be set manually. The mechanism is explained in the next section.
 
 ## The mechanism
 Every time you run a
