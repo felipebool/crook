@@ -97,4 +97,19 @@ class Hook
 
         unlink($gitHookPath);
     }
+
+    public function copyTheHook()
+    {
+        $source = $this->config->getVendorDir() . 'felipebool/crook/theHook';
+        $destination = $this->config->getProjectRoot() . 'theHook';
+
+        copy($source, $destination);
+    }
+
+    public function makeTheHookExecutable()
+    {
+        $theHookPath = $this->config->getProjectRoot() . 'theHook';
+
+        chmod($theHookPath, 0755);
+    }
 }

@@ -2,42 +2,28 @@
 
 namespace Crook\Command;
 
+use Crook\Hook;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Crook\Config;
 
 class InitHook extends Command
 {
-    private $crookConfig;
-
     protected function configure()
     {
         $this->setName('init');
         $this->setDescription('Init crook files');
-
-        $this->crookConfig = new Config;
     }
+
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->crookConfig->createCrookConfigFile();
-        $this->copyTheHook();
-        $this->makeTheHookExecutable();
-    }
-    private function copyTheHook()
-    {
-        $root = $this->crookConfig->getProjectRoot();
-        $source = $root . 'vendor/felipebool/crook/theHook';
-        $destination = $root . 'theHook';
+        $config = new Config;
+        $hook = new Hook($config);
 
-        copy($source, $destination);
-    }
-    private function makeTheHookExecutable()
-    {
-        $root = $this->crookConfig->getProjectRoot();
-        $theHookPath = $root . 'theHook';
+        $config->createCrookConfigFile();
 
-        chmod($theHookPath, 0755);
+        $hook->copyTheHook();
+        $hook->makeTheHookExecutable();
     }
 }

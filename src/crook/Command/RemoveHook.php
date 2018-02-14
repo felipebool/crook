@@ -20,8 +20,6 @@ class RemoveHook extends Command
             InputArgument::REQUIRED,
             'Git hook name'
         );
-
-        $this->crookConfig = new Config;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output)

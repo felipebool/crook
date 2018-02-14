@@ -114,5 +114,10 @@ class Config
             )
         );
     }
+
+    public function getVendorDir()
+    {
+        return $this->getProjectRoot() . 'vendor/';
+    }
 }
 
