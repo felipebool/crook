@@ -21,8 +21,10 @@ class ApplicationTest extends TestCase
             ->method('getProjectRoot')
             ->willReturn(__DIR__ . '/../../');
 
-        $dotenv = new Dotenv(__DIR__ . '/../../');
-        $dotenv->load();
+        if (file_exists(__DIR__ . '/../../.env')) {
+            $dotenv = new Dotenv(__DIR__ . '/../../');
+            $dotenv->load();
+        }
 
         $this
             ->config
