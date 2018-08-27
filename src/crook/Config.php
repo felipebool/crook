@@ -35,7 +35,7 @@ class Config
      */
     public function getVendorDir()
     {
-        return $this->getProjectRoot() . 'vendor/';
+        return $this->getProjectRoot() . CROOK_COMPOSER_VENDOR_DIR . '/';
     }
 
     /**

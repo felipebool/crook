@@ -2,13 +2,20 @@
 
 <?php
 
+function defineComposerVendorDir()
+{
+    $vendorDir = exec('composer config vendor-dir');
+
+    define('CROOK_COMPOSER_VENDOR_DIR', $vendorDir);
+}
+
 function defineComposerAutoloadPath()
 {
     $autoload = [
         __DIR__ . '/../../../autoload.php',
         __DIR__ . '/../../autoload.php',
-        __DIR__ . '/../vendor/autoload.php',
-        __DIR__ . '/vendor/autoload.php'
+        __DIR__ . '/../' . CROOK_COMPOSER_VENDOR_DIR . '/autoload.php',
+        __DIR__ . '/' . CROOK_COMPOSER_VENDOR_DIR . '/autoload.php'
     ];
 
     foreach ($autoload as $file) {
@@ -35,7 +42,7 @@ function defineProjectRootPath()
 {
     $rootDir = __DIR__ . '/../../../../';
 
-    if (file_exists($rootDir . '/vendor')) {
+    if (file_exists($rootDir . '/' . CROOK_COMPOSER_VENDOR_DIR)) {
         define('CROOK_PROJECT_ROOT', $rootDir);
     }
 }
@@ -43,9 +50,9 @@ function defineProjectRootPath()
 $crookName = 'Crook';
 $crookVersion = '0.0.1';
 
+defineComposerVendorDir();
 defineComposerAutoloadPath();
 defineProjectRootPath();
-
 
 require_once CROOK_COMPOSER_AUTOLOAD;
 
