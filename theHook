@@ -2,7 +2,13 @@
 
 <?php
 
-require_once 'vendor/autoload.php';
+if (!defined('CROOK_COMPOSER_VENDOR_DIR')) {
+    $vendorDir = exec('composer config vendor-dir');
+
+    define('CROOK_COMPOSER_VENDOR_DIR', $vendorDir);
+}
+
+require_once CROOK_COMPOSER_VENDOR_DIR . '/autoload.php';
 
 if (!defined('CROOK_PROJECT_ROOT')) {
     define('CROOK_PROJECT_ROOT', __DIR__ . '/');
