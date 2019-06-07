@@ -2,7 +2,7 @@
 
 <?php
 
-require_once __DIR___ . '/vendor/autoload.php';
+require_once __DIR__ . '/vendor/autoload.php';
 
 if (!defined('CROOK_PROJECT_ROOT')) {
     define('CROOK_PROJECT_ROOT', __DIR__ . '/');
