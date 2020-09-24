@@ -1,5 +1,5 @@
 {
-    "name": "ginsen/crook",
+    "name": "felipebool/crook",
     "description": "Crook is a simple tool to ease your life when dealing with git hooks",
     "type": "library",
     "keywords": [
